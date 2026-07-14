@@ -25,6 +25,11 @@ function saveRecord() {
             const ammo = Number(
                 document.getElementById("ammo").value
             );
+            const photoInput =
+            document.getElementById("photo");
+
+            const photo =
+                photoInput.files[0] || null;
 
             const tx = db.transaction(
                 "records",
@@ -46,7 +51,9 @@ function saveRecord() {
 
                 lon: position.coords.longitude,
 
-                accuracy: position.coords.accuracy
+                accuracy: position.coords.accuracy,
+
+                photo: photo
 
             });
 
@@ -99,6 +106,20 @@ function loadRecords() {
         .slice()
         .reverse()
         .forEach(r => {
+            let photoHtml = "";
+
+            if (r.photo) {
+
+                const url =
+                    URL.createObjectURL(
+                        r.photo
+                    );
+
+                photoHtml =
+                    `<img
+                        src="${url}"
+                        width="200">`;
+            }
 
             div.innerHTML += `
                 <p>
@@ -107,7 +128,8 @@ function loadRecords() {
                 ${r.ammo}発<br>
                 緯度:${r.lat?.toFixed(6)}<br>
                 経度:${r.lon?.toFixed(6)}<br>
-                精度:${Math.round(r.accuracy || 0)}m
+                精度:${Math.round(r.accuracy || 0)}m<br>
+                ${photoHtml}
                 </p>
                 <hr>
             `;
