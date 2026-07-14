@@ -58,6 +58,16 @@ function saveRecord() {
             });
 
             tx.oncomplete = () => {
+
+                document
+                    .getElementById("photo")
+                    .value = "";
+
+                document
+                    .getElementById("photoStatus")
+                    .textContent =
+                        "写真なし";
+
                 loadRecords();
             };
         },
@@ -136,6 +146,30 @@ function loadRecords() {
         });
     };
 }
+
+document
+.getElementById("photo")
+.addEventListener(
+    "change",
+    function() {
+
+        const status =
+            document.getElementById(
+                "photoStatus"
+            );
+
+        if (this.files.length > 0) {
+
+            status.textContent =
+                this.files[0].name;
+
+        } else {
+
+            status.textContent =
+                "写真なし";
+        }
+    }
+);
 
 document
 .getElementById("saveBtn")
