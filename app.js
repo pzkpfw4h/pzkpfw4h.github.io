@@ -1,3 +1,13 @@
+console.log(window.location.href);
+console.log(window.location.search);
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+console.log(params.get("gun"));
+
 let currentGun = "UNKNOWN";
 
 const params =

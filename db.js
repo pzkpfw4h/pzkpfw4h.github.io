@@ -24,3 +24,10 @@ request.onsuccess = (event) => {
 
     loadRecords();
 };
+
+document.getElementById("debug").innerHTML =
+    `
+    href=${window.location.href}<br>
+    search=${window.location.search}<br>
+    gun=${params.get("gun")}
+    `;
