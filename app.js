@@ -1,3 +1,21 @@
+let currentGun = "UNKNOWN";
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const gun =
+    params.get("gun");
+
+if (gun) {
+    currentGun = gun;
+}
+
+document.getElementById(
+    "gunName"
+).textContent = currentGun;
+
 function saveRecord() {
 
     const ammo = Number(
@@ -14,6 +32,7 @@ function saveRecord() {
 
     store.add({
         date: new Date().toISOString(),
+        gun: currentGun,
         ammo: ammo
     });
 
@@ -51,11 +70,14 @@ function loadRecords() {
         .reverse()
         .forEach(r => {
 
-            div.innerHTML +=
-                `<p>
+            div.innerHTML += `
+                <p>
                 ${r.date}<br>
+                ${r.gun}<br>
                 ${r.ammo}発
-                </p>`;
+                </p>
+                <hr>
+            `;
         });
     };
 }
