@@ -26,69 +26,70 @@ document.getElementById(
 
 function saveRecord() {
 
-    const ammo = Number(
-        document.getElementById("ammo").value
-    );
+    navigator.geolocation.getCurrentPosition(
 
-    const tx = db.transaction(
-        "records",
-        "readwrite"
-    );
+        function(position) {
 
-    const store =
-        tx.objectStore("records");
-
-    store.add({
-        date: new Date().toISOString(),
-        gun: currentGun,
-        ammo: ammo
-    });
-
-    tx.oncomplete = () => {
-        loadRecords();
-    };
-}
-
-function loadRecords() {
-
-    const tx = db.transaction(
-        "records",
-        "readonly"
-    );
-
-    const store =
-        tx.objectStore("records");
-
-    const req = store.getAll();
-
-    req.onsuccess = () => {
-
-        const records =
-            req.result;
-
-        const div =
-            document.getElementById(
-                "records"
+            const ammo = Number(
+                document.getElementById("ammo").value
             );
 
-        div.innerHTML = "";
+            const tx = db.transaction(
+                "records",
+                "readwrite"
+            );
 
-        records
-        .slice()
-        .reverse()
-        .forEach(r => {
+            const store =
+                tx.objectStore("records");
 
-            div.innerHTML += `
-                <p>
-                ${r.date}<br>
-                ${r.gun}<br>
-                ${r.ammo}発
-                </p>
-                <hr>
-            `;
-        });
-    };
+            store.add({
+
+                date: new Date().toISOString(),
+
+                gun: currentGun,
+
+                ammo: ammo,
+
+                lat: position.coords.latitude,
+
+                lon: position.coords.longitude,
+
+                accuracy: position.coords.accuracy
+
+            });
+
+            tx.oncomplete = () => {
+                loadRecords();
+            };
+        },
+
+        function(error) {
+
+            alert(
+                "GPS取得失敗: " +
+                error.message
+            );
+        },
+
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 60000
+        }
+    );
 }
+
+div.innerHTML += `
+    <p>
+    ${r.date}<br>
+    ${r.gun}<br>
+    ${r.ammo}発<br>
+    緯度:${r.lat?.toFixed(6)}<br>
+    経度:${r.lon?.toFixed(6)}<br>
+    精度:${Math.round(r.accuracy || 0)}m
+    </p>
+    <hr>
+`;
 
 document
 .getElementById("saveBtn")
