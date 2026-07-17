@@ -1,7 +1,4 @@
 
-alert(
-    window.location.pathname
-);
 let currentGun = "UNKNOWN";
 
 const path =
