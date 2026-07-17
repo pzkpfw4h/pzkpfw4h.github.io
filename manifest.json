@@ -1,7 +1,6 @@
 {
   "name": "GunLog",
   "short_name": "GunLog",
-  "start_url": "/",
   "scope": "/",
   "display": "standalone"
 }
