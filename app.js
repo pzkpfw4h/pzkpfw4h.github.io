@@ -1,15 +1,23 @@
 let currentGun = "UNKNOWN";
 
-const params =
-    new URLSearchParams(
-        window.location.search
-    );
+const path =
+    window.location.pathname;
 
 const gun =
-    params.get("gun");
+    path.split("/")[1];
 
 if (gun) {
     currentGun = gun;
+}
+
+if (gun === "m1100") {
+    currentGun = "M1100";
+}
+else if (gun === "m2") {
+    currentGun = "Benelli M2";
+}
+else if (gun === "mi-m2") {
+    currentGun = "MI-M2";
 }
 
 document.getElementById(

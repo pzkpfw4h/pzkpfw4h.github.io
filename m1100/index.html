@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>GunLog</title>
+
+<link rel="manifest" href="/manifest.json">
+</head>
+
+<body>
+
+<h1>GunLog</h1>
+
+<p>
+銃:
+<span id="gunName">未設定</span>
+</p>
+
+<p>
+弾数:
+<input type="number" id="ammo" value="100">
+</p>
+
+<p>
+スコアシート等の写真（任意）
+<br>
+<input
+    type="file"
+    id="photo"
+    accept="image/*">
+
+<div id="photoStatus">
+写真なし
+</div>
+
+<button id="saveBtn">
+保存
+</button>
+
+<hr>
+
+<h2>記録一覧</h2>
+
+<div id="records">
+読み込み中...
+</div>
+
+<script src="db.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
