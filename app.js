@@ -1,3 +1,80 @@
+function distanceMeters(
+    lat1,
+    lon1,
+    lat2,
+    lon2
+) {
+
+    const R = 6371000;
+
+    const dLat =
+        (lat2 - lat1) *
+        Math.PI / 180;
+
+    const dLon =
+        (lon2 - lon1) *
+        Math.PI / 180;
+
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+
+        Math.sin(dLon / 2) ** 2;
+
+    return (
+        2 *
+        R *
+        Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+        )
+    );
+}
+
+function findRange(
+    lat,
+    lon
+) {
+
+    let nearest = null;
+
+    let minDistance =
+        Infinity;
+
+    ranges.forEach(r => {
+
+        const d =
+            distanceMeters(
+                lat,
+                lon,
+                r.lat,
+                r.lon
+            );
+
+        if (
+            d < minDistance
+        ) {
+
+            minDistance =
+                d;
+
+            nearest = r;
+        }
+    });
+
+    if (
+        nearest &&
+        minDistance <=
+        nearest.radius
+    ) {
+
+        return nearest.name;
+    }
+
+    return "不明";
+}
 
 let currentGun = "UNKNOWN";
 alert(window.location.pathname);
@@ -60,24 +137,25 @@ function saveRecord() {
 
             const store =
                 tx.objectStore("records");
-
-            store.add({
-
-                date: new Date().toISOString(),
-
-                gun: currentGun,
-
-                ammo: ammo,
-
-                lat: position.coords.latitude,
-
-                lon: position.coords.longitude,
-
-                accuracy: position.coords.accuracy,
-
-                photo: photo
-
-            });
+            const rangeName =
+                findRange(
+                    position.coords.latitude,
+                    position.coords.longitude
+                );
+                store.add({
+                    date:
+                        new Date()
+                        .toISOString(),
+                    gun: currentGun,
+                    ammo: ammo,
+                    range: rangeName,
+                    lat:
+                        position.coords.latitude,
+                    lon:
+                        position.coords.longitude,
+                    accuracy:
+                        position.coords.accuracy
+                });
 
             tx.oncomplete = () => {
                 document.getElementById(
@@ -161,6 +239,7 @@ function loadRecords() {
                 <p>
                 ${r.date}<br>
                 ${r.gun}<br>
+                ${r.range}<br>
                 ${r.ammo}発<br>
                 緯度:${r.lat?.toFixed(6)}<br>
                 経度:${r.lon?.toFixed(6)}<br>
