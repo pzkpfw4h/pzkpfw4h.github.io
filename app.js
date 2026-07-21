@@ -107,30 +107,7 @@ const rangeSelect =
         "rangeSelect"
     );
 
-    navigator.geolocation.getCurrentPosition(
-
-        function(position) {
-    
-            const rangeName =
-                findRange(
-                    position.coords.latitude,
-                    position.coords.longitude
-                );
-    
-            rangeSelect.value =
-                rangeName;
-        },
-    
-        function(error) {
-    
-            console.log(
-                "GPS取得失敗",
-                error
-            );
-        }
-    );
-alert(rangeName);
-
+// ドロップダウン作成
 ranges.forEach(r => {
 
     const option =
@@ -148,6 +125,35 @@ ranges.forEach(r => {
         option
     );
 });
+
+// 起動時にGPSから自動選択
+navigator.geolocation.getCurrentPosition(
+
+    function(position) {
+
+        const rangeName =
+            findRange(
+                position.coords.latitude,
+                position.coords.longitude
+            );
+
+        rangeSelect.value =
+            rangeName;
+
+        console.log(
+            "射撃場推定:",
+            rangeName
+        );
+    },
+
+    function(error) {
+
+        console.log(
+            "GPS取得失敗",
+            error
+        );
+    }
+);
 
 function saveRecord() {
     const ammo = Number(
@@ -194,13 +200,25 @@ function saveRecord() {
                     date:
                         new Date()
                         .toISOString(),
-                    gun: currentGun,
-                    ammo: ammo,
-                    range: rangeSelect.value,
+                
+                    gun:
+                        currentGun,
+                
+                    ammo:
+                        ammo,
+                
+                    range:
+                        rangeSelect.value,
+                
+                    photo:
+                        photo,
+                
                     lat:
                         position.coords.latitude,
+                
                     lon:
                         position.coords.longitude,
+                
                     accuracy:
                         position.coords.accuracy
                 });
