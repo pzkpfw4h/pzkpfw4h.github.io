@@ -77,7 +77,7 @@ function findRange(
 }
 
 let currentGun = "UNKNOWN";
-alert(window.location.pathname);
+//alert(window.location.pathname);
 const path =
     window.location.pathname;
 
