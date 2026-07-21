@@ -26,7 +26,20 @@ document.getElementById(
 ).textContent = currentGun;
 
 function saveRecord() {
+    const ammo = Number(
+        document.getElementById(
+            "ammo"
+        ).value
+    );
 
+    if (ammo <= 0) {
+
+        alert(
+            "弾数を入力してください"
+        );
+
+        return;
+    }
     navigator.geolocation.getCurrentPosition(
 
         function(position) {
@@ -67,7 +80,11 @@ function saveRecord() {
             });
 
             tx.oncomplete = () => {
-
+                document.getElementById(
+                    "ammo"
+                ).value = "";
+                
+                saveBtn.disabled = true;
                 document
                     .getElementById("photo")
                     .value = "";
@@ -185,4 +202,26 @@ document
 .addEventListener(
     "click",
     saveRecord
+);
+
+const ammoInput =
+    document.getElementById(
+        "ammo"
+    );
+
+const saveBtn =
+    document.getElementById(
+        "saveBtn"
+    );
+
+ammoInput.addEventListener(
+    "input",
+    function() {
+
+        const value =
+            Number(this.value);
+
+        saveBtn.disabled =
+            !(value > 0);
+    }
 );
