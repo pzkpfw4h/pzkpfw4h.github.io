@@ -107,6 +107,30 @@ const rangeSelect =
         "rangeSelect"
     );
 
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+    
+            const rangeName =
+                findRange(
+                    position.coords.latitude,
+                    position.coords.longitude
+                );
+    
+            rangeSelect.value =
+                rangeName;
+        },
+    
+        function(error) {
+    
+            console.log(
+                "GPS取得失敗",
+                error
+            );
+        }
+    );
+alert(rangeName);
+
 ranges.forEach(r => {
 
     const option =
