@@ -102,6 +102,29 @@ document.getElementById(
     "gunName"
 ).textContent = currentGun;
 
+const rangeSelect =
+    document.getElementById(
+        "rangeSelect"
+    );
+
+ranges.forEach(r => {
+
+    const option =
+        document.createElement(
+            "option"
+        );
+
+    option.value =
+        r.name;
+
+    option.textContent =
+        r.name;
+
+    rangeSelect.appendChild(
+        option
+    );
+});
+
 function saveRecord() {
     const ammo = Number(
         document.getElementById(
@@ -142,13 +165,14 @@ function saveRecord() {
                     position.coords.latitude,
                     position.coords.longitude
                 );
+                rangeSelect.value = rangeName;
                 store.add({
                     date:
                         new Date()
                         .toISOString(),
                     gun: currentGun,
                     ammo: ammo,
-                    range: rangeName,
+                    range: rangeSelect.value,
                     lat:
                         position.coords.latitude,
                     lon:
