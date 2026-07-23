@@ -274,6 +274,10 @@ function loadRecords() {
 
         const records =
             req.result;
+            alert(
+                "件数=" +
+                records.length
+            );
 
         const div =
             document.getElementById(
